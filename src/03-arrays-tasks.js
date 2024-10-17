@@ -537,8 +537,20 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const arr = new Map();
+  array.map((element) => {
+    const key = keySelector(element);
+    const value = valueSelector(element);
+    if (arr.has(key)) {
+      arr.get(key).push(value);
+    } else {
+      arr.set(key, [value]);
+    }
+    return arr;
+  });
+
+  return arr;
 }
 
 
@@ -555,8 +567,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.flatMap(childrenSelector);
 }
 
 
@@ -572,8 +584,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((acc, idx) => acc[idx], arr);
 }
 
 
@@ -595,8 +607,21 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const newArr = [];
+  const arrLength = arr.length;
+  const middleIdx = Math.floor(arrLength / 2);
+  const start = arrLength % 2 === 0
+    ? arr.slice(middleIdx, arr.length)
+    : arr.slice(middleIdx + 1, arr.length);
+  const end = arrLength % 2 === 0 ? arr.slice(0, middleIdx) : arr.slice(0, middleIdx);
+  newArr.push(start);
+  if (arrLength % 2 !== 0) {
+    newArr.push(arr[middleIdx]);
+  }
+  newArr.push(end);
+  const result = newArr.reduce((a, b) => a.concat(b));
+  return result;
 }
 
 
