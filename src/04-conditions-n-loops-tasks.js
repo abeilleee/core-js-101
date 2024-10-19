@@ -435,8 +435,19 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(s) {
+  let commonPath = '';
+  const initialPathArray = s[0].split(/(\/)/);
+  for (let i = 0; i < initialPathArray.length; i += 1) {
+    const pathPart = initialPathArray[i];
+    const isPathPartCommon = s.every((path) => pathPart === path.split(/(\/)/)[i]);
+    if (isPathPartCommon) {
+      commonPath += pathPart;
+    } else {
+      break;
+    }
+  }
+  return commonPath;
 }
 
 
@@ -458,8 +469,16 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = Array.from({ length: m1.length }, () => Array(m2[0].length).fill(0));
+  for (let i = 0; i < m1.length; i += 1) {
+    for (let j = 0; j < m2[0].length; j += 1) {
+      for (let k = 0; k < m1[0].length; k += 1) {
+        result[i][j] += (m1[i][k] * m2[k][j]);
+      }
+    }
+  }
+  return result;
 }
 
 
@@ -493,8 +512,21 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const winPositions = [
+    [position[0][0], position[0][1], position[0][2]],
+    [position[1][0], position[1][1], position[1][2]],
+    [position[2][0], position[2][1], position[2][2]],
+
+    [position[0][0], position[1][0], position[2][0]],
+    [position[0][1], position[1][1], position[2][1]],
+    [position[0][2], position[1][2], position[2][2]],
+
+    [position[0][0], position[1][1], position[2][2]],
+    [position[0][2], position[1][1], position[2][0]],
+  ];
+  const result = winPositions.find((i) => i[0] && i.every((value) => value === i[0]));
+  return result ? result[0] : undefined;
 }
 
 
